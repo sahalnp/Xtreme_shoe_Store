@@ -1,8 +1,140 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, ArrowRight, Star, Flame, ShieldCheck, Truck, RotateCcw, Footprints, Plus, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { fetchProducts, fetchCategories } from '../api/client';
+
+// Product card with automatic multi-angle slideshow on hover
+function CatalogProductCard({ shoe, onCardClick }) {
+  const shoeImages = [
+    shoe.image_url || shoe.image,
+    shoe.image2_url || shoe.image2,
+    shoe.image3_url || shoe.image3,
+    shoe.image4_url || shoe.image4,
+  ].filter(Boolean);
+
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (isHovered && shoeImages.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setCurrentImgIndex((prev) => (prev + 1) % shoeImages.length);
+      }, 2000); // changes image every 2 seconds on hover
+    } else {
+      clearInterval(intervalRef.current);
+      setCurrentImgIndex(0);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [isHovered, shoeImages.length]);
+
+  const activeImage = shoeImages[currentImgIndex] || shoe.image_url || shoe.image;
+
+  return (
+    <div
+      onClick={() => onCardClick(shoe)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="catalog-card"
+    >
+      {/* Card Image Area with Edge-to-Edge Sneaker Photos & Hover Slideshow */}
+      <div className="catalog-card-img-box">
+        {activeImage ? (
+          <img
+            key={activeImage}
+            src={activeImage}
+            alt={shoe.name}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+              transform: isHovered ? 'scale(1.06)' : 'scale(1)'
+            }}
+          />
+        ) : (
+          <Footprints size={48} color="#cbd5e1" />
+        )}
+
+        {/* Multi-angle indicator badge on hover */}
+        {isHovered && shoeImages.length > 1 && (
+          <div style={{
+            position: 'absolute',
+            bottom: '0.65rem',
+            right: '0.65rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            color: '#ffffff',
+            padding: '0.2rem 0.55rem',
+            borderRadius: '9999px',
+            fontSize: '0.65rem',
+            fontWeight: 800,
+            letterSpacing: '0.04em',
+            backdropFilter: 'blur(4px)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.25rem',
+            zIndex: 2,
+            boxShadow: '0 2px 6px rgba(0,0,0,0.3)'
+          }}>
+            <span>{currentImgIndex + 1}/{shoeImages.length}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Card Details */}
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <div className="catalog-card-sub">
+          {shoe.color || 'Standard Edition'}
+        </div>
+
+        <h3 className="catalog-card-title">
+          {shoe.name}
+        </h3>
+
+        <div className="catalog-card-size">
+          Available in: <strong style={{ color: '#0f172a' }}>{shoe.size || 'UK 7-11'}</strong>
+        </div>
+
+        {/* Brand Badge */}
+        <div style={{
+          marginTop: 'auto',
+          paddingTop: '0.65rem',
+          borderTop: '1px solid #f1f5f9',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div>
+            <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Brand</div>
+            <div style={{
+              fontFamily: 'var(--font-brand)',
+              fontSize: '0.92rem',
+              fontWeight: 900,
+              color: '#f97316',
+              textTransform: 'uppercase'
+            }}>
+              {shoe.brand_name || shoe.brand?.name || 'Nike'}
+            </div>
+          </div>
+          <span style={{
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            color: '#475569',
+            backgroundColor: '#f1f5f9',
+            padding: '0.2rem 0.55rem',
+            borderRadius: '4px'
+          }}>
+            Explore →
+          </span>
+        </div>
+
+      </div>
+    </div>
+  );
+}
 
 export default function StorePage() {
   const [products, setProducts] = useState([]);
@@ -380,87 +512,13 @@ export default function StorePage() {
           </div>
         ) : (
           <div className="catalog-grid">
-            {products.map((shoe) => {
-              const shoeId = shoe.id || shoe._id;
-
-              return (
-                <div
-                  key={shoeId}
-                  onClick={() => handleCardClick(shoe)}
-                  className="catalog-card"
-                >
-                  {/* Card Image Area with Edge-to-Edge Sneaker Photos */}
-                  <div className="catalog-card-img-box">
-                    {shoe.image_url || shoe.image ? (
-                      <img
-                        src={shoe.image_url || shoe.image}
-                        alt={shoe.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block',
-                          transition: 'transform 0.35s ease'
-                        }}
-                        onMouseEnter={(e) => e.target.style.transform = 'scale(1.08)'}
-                        onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-                      />
-                    ) : (
-                      <Footprints size={48} color="#cbd5e1" />
-                    )}
-                  </div>
-
-                  {/* Card Details */}
-                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <div className="catalog-card-sub">
-                      {shoe.color || 'Standard Edition'}
-                    </div>
-
-                    <h3 className="catalog-card-title">
-                      {shoe.name}
-                    </h3>
-
-                    <div className="catalog-card-size">
-                      Available in: <strong style={{ color: '#0f172a' }}>{shoe.size || 'UK 7-11'}</strong>
-                    </div>
-
-                    {/* Brand Badge */}
-                    <div style={{
-                      marginTop: 'auto',
-                      paddingTop: '0.65rem',
-                      borderTop: '1px solid #f1f5f9',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}>
-                      <div>
-                        <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Brand</div>
-                        <div style={{
-                          fontFamily: 'var(--font-brand)',
-                          fontSize: '0.92rem',
-                          fontWeight: 900,
-                          color: '#f97316',
-                          textTransform: 'uppercase'
-                        }}>
-                          {shoe.brand_name || shoe.brand?.name || 'Nike'}
-                        </div>
-                      </div>
-                      <span style={{
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        color: '#475569',
-                        backgroundColor: '#f1f5f9',
-                        padding: '0.2rem 0.55rem',
-                        borderRadius: '4px'
-                      }}>
-                        Explore →
-                      </span>
-                    </div>
-
-                  </div>
-                </div>
-              );
-            })}
+            {products.map((shoe) => (
+              <CatalogProductCard
+                key={shoe.id || shoe._id}
+                shoe={shoe}
+                onCardClick={handleCardClick}
+              />
+            ))}
           </div>
         )}
 
