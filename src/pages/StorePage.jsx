@@ -82,38 +82,6 @@ function CatalogProductCard({ shoe, onCardClick }) {
         ) : (
           <Footprints size={48} color="#cbd5e1" />
         )}
-
-        {/* Multi-angle horizontal page indicators on hover */}
-        {isHovered && shoeImages.length > 1 && (
-          <div style={{
-            position: 'absolute',
-            bottom: '0.65rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.35rem',
-            backgroundColor: 'rgba(0, 0, 0, 0.65)',
-            padding: '0.3rem 0.65rem',
-            borderRadius: '9999px',
-            backdropFilter: 'blur(6px)',
-            zIndex: 3,
-            boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
-          }}>
-            {shoeImages.map((_, dotIdx) => (
-              <div
-                key={dotIdx}
-                style={{
-                  width: dotIdx === currentImgIndex ? '14px' : '6px',
-                  height: '6px',
-                  borderRadius: '9999px',
-                  backgroundColor: dotIdx === currentImgIndex ? '#f97316' : 'rgba(255, 255, 255, 0.45)',
-                  transition: 'all 0.35s cubic-bezier(0.25, 1, 0.5, 1)'
-                }}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Card Details */}
