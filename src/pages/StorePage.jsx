@@ -39,47 +39,79 @@ function CatalogProductCard({ shoe, onCardClick }) {
       onMouseLeave={() => setIsHovered(false)}
       className="catalog-card"
     >
-      {/* Card Image Area with Edge-to-Edge Sneaker Photos & Hover Slideshow */}
-      <div className="catalog-card-img-box">
-        {activeImage ? (
-          <img
-            key={activeImage}
-            src={activeImage}
-            alt={shoe.name}
+      {/* Card Image Area with Edge-to-Edge Sneaker Photos & Horizontal Slide Carousel */}
+      <div className="catalog-card-img-box" style={{ overflow: 'hidden', position: 'relative' }}>
+        {shoeImages.length > 0 ? (
+          <div
             style={{
+              display: 'flex',
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              display: 'block',
-              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
-              transform: isHovered ? 'scale(1.06)' : 'scale(1)'
+              transform: `translateX(-${currentImgIndex * 100}%)`,
+              transition: isHovered 
+                ? 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)' 
+                : 'transform 0.25s ease',
+              willChange: 'transform'
             }}
-          />
+          >
+            {shoeImages.map((imgSrc, idx) => (
+              <div
+                key={idx}
+                style={{
+                  minWidth: '100%',
+                  width: '100%',
+                  height: '100%',
+                  flexShrink: 0
+                }}
+              >
+                <img
+                  src={imgSrc}
+                  alt={`${shoe.name} - View ${idx + 1}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                    transition: 'transform 0.4s ease',
+                    transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         ) : (
           <Footprints size={48} color="#cbd5e1" />
         )}
 
-        {/* Multi-angle indicator badge on hover */}
+        {/* Multi-angle horizontal page indicators on hover */}
         {isHovered && shoeImages.length > 1 && (
           <div style={{
             position: 'absolute',
             bottom: '0.65rem',
-            right: '0.65rem',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            color: '#ffffff',
-            padding: '0.2rem 0.55rem',
-            borderRadius: '9999px',
-            fontSize: '0.65rem',
-            fontWeight: 800,
-            letterSpacing: '0.04em',
-            backdropFilter: 'blur(4px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.25rem',
-            zIndex: 2,
-            boxShadow: '0 2px 6px rgba(0,0,0,0.3)'
+            gap: '0.35rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.65)',
+            padding: '0.3rem 0.65rem',
+            borderRadius: '9999px',
+            backdropFilter: 'blur(6px)',
+            zIndex: 3,
+            boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
           }}>
-            <span>{currentImgIndex + 1}/{shoeImages.length}</span>
+            {shoeImages.map((_, dotIdx) => (
+              <div
+                key={dotIdx}
+                style={{
+                  width: dotIdx === currentImgIndex ? '14px' : '6px',
+                  height: '6px',
+                  borderRadius: '9999px',
+                  backgroundColor: dotIdx === currentImgIndex ? '#f97316' : 'rgba(255, 255, 255, 0.45)',
+                  transition: 'all 0.35s cubic-bezier(0.25, 1, 0.5, 1)'
+                }}
+              />
+            ))}
           </div>
         )}
       </div>
