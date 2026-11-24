@@ -337,6 +337,8 @@ body {
   position: relative;
   padding: 0;
   margin-bottom: 1.25rem;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .catalog-card-img-box img {

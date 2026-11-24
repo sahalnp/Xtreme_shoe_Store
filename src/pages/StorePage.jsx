@@ -39,45 +39,57 @@ function CatalogProductCard({ shoe, onCardClick }) {
       onMouseLeave={() => setIsHovered(false)}
       className="catalog-card"
     >
-      {/* Card Image Area with Edge-to-Edge Sneaker Photos & Horizontal Slide Carousel */}
-      <div className="catalog-card-img-box" style={{ overflow: 'hidden', position: 'relative' }}>
+      {/* Card Image Area with Edge-to-Edge Sneaker Photos & Clean Horizontal Slide */}
+      <div 
+        className="catalog-card-img-box" 
+        style={{ 
+          overflow: 'hidden', 
+          position: 'relative',
+          borderRadius: '1rem',
+          backgroundColor: '#f8fafc'
+        }}
+      >
         {shoeImages.length > 0 ? (
-          <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              height: '100%',
-              transform: `translateX(-${currentImgIndex * 100}%)`,
-              transition: isHovered 
-                ? 'transform 0.55s cubic-bezier(0.25, 1, 0.5, 1)' 
-                : 'transform 0.25s ease',
-              willChange: 'transform'
-            }}
-          >
-            {shoeImages.map((imgSrc, idx) => (
-              <div
-                key={idx}
-                style={{
-                  minWidth: '100%',
-                  width: '100%',
-                  height: '100%',
-                  flexShrink: 0
-                }}
-              >
-                <img
-                  src={imgSrc}
-                  alt={`${shoe.name} - View ${idx + 1}`}
+          <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+            {shoeImages.map((imgSrc, idx) => {
+              const isActive = idx === currentImgIndex;
+              const isPast = idx < currentImgIndex;
+              const translateX = isActive ? '0%' : isPast ? '-100%' : '100%';
+
+              return (
+                <div
+                  key={idx}
                   style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transition: 'transform 0.4s ease',
-                    transform: isHovered ? 'scale(1.05)' : 'scale(1)'
+                    transform: `translateX(${translateX})`,
+                    opacity: isActive ? 1 : 0,
+                    pointerEvents: 'none',
+                    transition: isHovered 
+                      ? 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease' 
+                      : 'none',
+                    willChange: 'transform, opacity',
+                    overflow: 'hidden'
                   }}
-                />
-              </div>
-            ))}
+                >
+                  <img
+                    src={imgSrc}
+                    alt={`${shoe.name} - View ${idx + 1}`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                      transform: isHovered ? 'scale(1.04)' : 'scale(1)'
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
         ) : (
           <Footprints size={48} color="#cbd5e1" />
