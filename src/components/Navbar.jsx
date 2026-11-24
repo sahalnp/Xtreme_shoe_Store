@@ -15,25 +15,11 @@ export default function Navbar({ cartCount = 0, onSearch, searchTerm }) {
       borderBottom: '1px solid #1f242d',
       width: '100%'
     }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '1440px',
-        margin: '0 auto',
-        padding: '1.1rem 2.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
+      <div className="navbar-inner">
         
         {/* Left Side: Brand Logo */}
         <Link to="/" style={{ textDecoration: 'none', color: '#ffffff', display: 'flex', alignItems: 'center' }}>
-          <span style={{
-            fontFamily: 'var(--font-brand)',
-            fontSize: '1.85rem',
-            fontWeight: 900,
-            letterSpacing: '0.04em',
-            textTransform: 'uppercase'
-          }}>
+          <span className="brand-text">
             XTREME <span style={{ color: 'var(--primary)' }}>SUPERKICKS</span>
           </span>
         </Link>

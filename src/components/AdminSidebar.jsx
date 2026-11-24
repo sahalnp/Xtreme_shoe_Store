@@ -20,7 +20,7 @@ export default function AdminSidebar({ stats }) {
   };
 
   return (
-    <aside style={{
+    <aside className="admin-sidebar" style={{
       width: '260px',
       backgroundColor: '#ffffff',
       borderRight: '1px solid #e2e8f0',
@@ -97,37 +97,6 @@ export default function AdminSidebar({ stats }) {
                 </span>
               )}
             </Link>
-
-            <a
-              href="#categories"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                padding: '0.75rem 0.85rem',
-                borderRadius: '0.5rem',
-                color: '#64748b',
-                textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '0.9rem'
-              }}
-            >
-              <Layers size={18} />
-              <span>Categories</span>
-              {stats?.total_categories !== undefined && (
-                <span style={{
-                  marginLeft: 'auto',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  padding: '0.15rem 0.55rem',
-                  borderRadius: '1rem',
-                  background: '#f1f5f9',
-                  color: '#334155'
-                }}>
-                  {stats.total_categories}
-                </span>
-              )}
-            </a>
           </nav>
         </div>
       </div>

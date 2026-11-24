@@ -64,14 +64,14 @@ export default function StorePage() {
       />
 
       {/* Dribbble Style Modern Hero Section */}
-      <section style={{
+      <section className="hero-section" style={{
         position: 'relative',
         padding: '3.5rem 2.5rem 4.5rem',
         backgroundColor: '#fafbfc',
         borderBottom: '1px solid #edf2f7',
         overflow: 'hidden'
       }}>
-        <div style={{
+        <div className="hero-grid" style={{
           width: '100%',
           maxWidth: '1440px',
           margin: '0 auto',
@@ -81,7 +81,7 @@ export default function StorePage() {
           alignItems: 'center'
         }}>
           {/* Hero Left Content */}
-          <div>
+          <div className="hero-left-col">
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -163,7 +163,7 @@ export default function StorePage() {
             </div>
 
             {/* Stats Row */}
-            <div style={{
+            <div className="hero-stats-row" style={{
               display: 'flex',
               gap: '2.5rem',
               marginTop: '3rem',
@@ -185,8 +185,8 @@ export default function StorePage() {
             </div>
           </div>
 
-          {/* Hero Right Visual (Random product from DB every load) */}
-          <div style={{
+          {/* Hero Right Visual (Responsive shoe image and badges) */}
+          <div className="hero-visual" style={{
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
@@ -203,6 +203,7 @@ export default function StorePage() {
             }} />
 
             <img
+              className="hero-visual-img"
               src={featuredHeroShoe?.image_url || featuredHeroShoe?.image || "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=1200&q=85"}
               alt={featuredHeroShoe?.name || "Air Jordan 1"}
               style={{
@@ -222,7 +223,7 @@ export default function StorePage() {
               onClick={() => featuredHeroShoe && handleCardClick(featuredHeroShoe)}
             />
 
-            <div style={{
+            <div className="hero-stat-pill-top" style={{
               position: 'absolute',
               top: '10%',
               right: '5%',
@@ -244,6 +245,7 @@ export default function StorePage() {
             </div>
 
             <div 
+              className="hero-stat-pill-bottom"
               style={{
                 position: 'absolute',
                 bottom: '12%',
@@ -258,58 +260,60 @@ export default function StorePage() {
               }}
               onClick={() => featuredHeroShoe && handleCardClick(featuredHeroShoe)}
             >
-              <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Starting From</div>
-              <div style={{ fontFamily: 'var(--font-brand)', fontSize: '1.35rem', fontWeight: 900 }}>
-                {featuredHeroShoe?.price 
-                  ? `₹${Math.round(parseFloat(featuredHeroShoe.price) * 83).toLocaleString('en-IN')}` 
-                  : '₹9,500'}
+              <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Price Range</div>
+              <div style={{ fontFamily: 'var(--font-brand)', fontSize: '1.25rem', fontWeight: 900 }}>
+                {featuredHeroShoe?.min_price && featuredHeroShoe?.max_price
+                  ? `₹${Math.round(parseFloat(featuredHeroShoe.min_price) * 83).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(featuredHeroShoe.max_price) * 83).toLocaleString('en-IN')}`
+                  : (featuredHeroShoe?.price 
+                      ? `₹${Math.round(parseFloat(featuredHeroShoe.price) * 83 * 0.9).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(featuredHeroShoe.price) * 83 * 1.2).toLocaleString('en-IN')}` 
+                      : '₹9,999 – ₹14,999')}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3 Pillars */}
-      <div style={{
+      {/* 3 Pillars: Single line on mobile */}
+      <div className="features-bar" style={{
         width: '100%',
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
         borderBottom: '1px solid #e2e8f0',
         backgroundColor: '#ffffff'
       }}>
-        <div style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
-          <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
+          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Truck size={22} color="#0f172a" />
           </div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Express Delivery</div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Free shipping on all orders over ₹2,999</div>
+            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Express Delivery</div>
+            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>Free shipping on all orders over ₹2,999</div>
           </div>
         </div>
 
-        <div style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
-          <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
+          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ShieldCheck size={22} color="#0f172a" />
           </div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>100% Genuine Sneakers</div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Every shoe certified authentic</div>
+            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>100% Genuine Sneakers</div>
+            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>Every shoe certified authentic</div>
           </div>
         </div>
 
-        <div style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <RotateCcw size={22} color="#0f172a" />
           </div>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Hassle-Free Returns</div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b' }}>14-day easy return policy</div>
+            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Hassle-Free Returns</div>
+            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>14-day easy return policy</div>
           </div>
         </div>
       </div>
 
       {/* Main Catalog Section */}
-      <main id="catalog" style={{ width: '100%', maxWidth: '1440px', margin: '0 auto', padding: '3.5rem 2.5rem 5rem' }}>
+      <main id="catalog" className="catalog-section" style={{ width: '100%', maxWidth: '1440px', margin: '0 auto', padding: '3.5rem 2.5rem 5rem' }}>
         
         {/* Header and Category Pills */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -367,7 +371,7 @@ export default function StorePage() {
           </div>
         </div>
 
-        {/* Product Cards (NO Heart / Love Icon on card as requested!) */}
+        {/* Product Cards: Small 2-column on mobile, expansive grid on laptop */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '6rem 0', color: '#64748b' }}>
             Loading shoe collection...
@@ -379,55 +383,18 @@ export default function StorePage() {
             <p style={{ color: '#64748b', fontSize: '0.85rem' }}>Try clearing filters or search queries.</p>
           </div>
         ) : (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))',
-            gap: '2.25rem'
-          }}>
+          <div className="catalog-grid">
             {products.map((shoe) => {
               const shoeId = shoe.id || shoe._id;
-              const isAdded = addedItems[shoeId];
 
               return (
                 <div
                   key={shoeId}
                   onClick={() => handleCardClick(shoe)}
-                  style={{
-                    backgroundColor: '#ffffff',
-                    borderRadius: '1.25rem',
-                    padding: '1.25rem',
-                    border: '1px solid #edf2f7',
-                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.04)',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    position: 'relative'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 20px 30px -10px rgba(0, 0, 0, 0.12)';
-                    e.currentTarget.style.borderColor = '#cbd5e1';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.04)';
-                    e.currentTarget.style.borderColor = '#edf2f7';
-                  }}
+                  className="catalog-card"
                 >
                   {/* Card Image Area with Real Sneaker Photos */}
-                  <div style={{
-                    height: '240px',
-                    backgroundColor: '#f8fafc',
-                    borderRadius: '1rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    padding: '1.25rem',
-                    marginBottom: '1.25rem'
-                  }}>
+                  <div className="catalog-card-img-box">
                     {shoe.image_url || shoe.image ? (
                       <img
                         src={shoe.image_url || shoe.image}
@@ -442,45 +409,39 @@ export default function StorePage() {
                         onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                       />
                     ) : (
-                      <Footprints size={64} color="#cbd5e1" />
+                      <Footprints size={48} color="#cbd5e1" />
                     )}
                   </div>
 
                   {/* Card Details */}
                   <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '0.25rem' }}>
+                    <div className="catalog-card-sub">
                       {shoe.color || 'Standard Edition'}
                     </div>
 
-                    <h3 style={{
-                      fontFamily: 'var(--font-brand)',
-                      fontSize: '1.15rem',
-                      fontWeight: 800,
-                      textTransform: 'uppercase',
-                      color: '#000000',
-                      marginBottom: '0.75rem',
-                      lineHeight: 1.25
-                    }}>
+                    <h3 className="catalog-card-title">
                       {shoe.name}
                     </h3>
 
-                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '1.25rem' }}>
+                    <div className="catalog-card-size">
                       Available in: <strong style={{ color: '#0f172a' }}>{shoe.size || 'UK 7-11'}</strong>
                     </div>
 
-                    {/* Card Price (Clean display, NO Plus Icon button) */}
+                    {/* Card Price Range */}
                     <div style={{
                       marginTop: 'auto',
-                      paddingTop: '0.85rem',
+                      paddingTop: '0.65rem',
                       borderTop: '1px solid #f1f5f9',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between'
                     }}>
                       <div>
-                        <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Price</div>
-                        <div style={{ fontFamily: 'var(--font-brand)', fontSize: '1.35rem', fontWeight: 900, color: '#000000' }}>
-                          ₹{Math.round(parseFloat(shoe.price) * 83).toLocaleString('en-IN')}
+                        <div className="catalog-card-price-label">Price Range</div>
+                        <div className="catalog-card-price-val">
+                          {shoe.min_price && shoe.max_price
+                            ? `₹${Math.round(parseFloat(shoe.min_price) * 83).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(shoe.max_price) * 83).toLocaleString('en-IN')}`
+                            : `₹${Math.round(parseFloat(shoe.price || 120) * 83 * 0.9).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(shoe.price || 120) * 83 * 1.2).toLocaleString('en-IN')}`}
                         </div>
                       </div>
                     </div>
@@ -504,7 +465,7 @@ export default function StorePage() {
       }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', marginBottom: '3.5rem' }}>
+          <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', marginBottom: '3.5rem' }}>
             
             {/* Brand Intro */}
             <div>
@@ -584,7 +545,7 @@ export default function StorePage() {
 
           </div>
 
-          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94a3b8' }}>
+          <div className="footer-bottom" style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94a3b8' }}>
             <div>© 2026 XTREME SUPERKICKS. All rights reserved.</div>
             <div>Official Sneaker and Streetwear Portal.</div>
           </div>

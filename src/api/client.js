@@ -42,6 +42,40 @@ export async function fetchCategories() {
   return response.json();
 }
 
+export async function createCategory(data) {
+  const response = await fetch(`${API_BASE_URL}/categories/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to create category');
+  }
+  return response.json();
+}
+
+export async function fetchBrands() {
+  const response = await fetch(`${API_BASE_URL}/brands/`);
+  if (!response.ok) {
+    throw new Error('Failed to load brands');
+  }
+  return response.json();
+}
+
+export async function createBrand(data) {
+  const response = await fetch(`${API_BASE_URL}/brands/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to create brand');
+  }
+  return response.json();
+}
+
 export async function fetchStoreStats() {
   const response = await fetch(`${API_BASE_URL}/stats/`);
   if (!response.ok) {

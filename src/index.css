@@ -265,3 +265,428 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ==========================================================================
+   Responsive Mobile E-Commerce Styling
+   ========================================================================== */
+
+/* Navbar Mobile */
+.navbar-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-text {
+  font-family: var(--font-brand);
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Hero Section Mobile */
+.hero-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Product Catalog Grid on Desktop vs Mobile */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.catalog-card {
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #edf2f7;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.catalog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e1;
+}
+
+.catalog-card-img-box {
+  height: 240px;
+  background-color: #f8fafc;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.catalog-card-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.catalog-card-title {
+  font-family: var(--font-brand);
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+}
+
+.catalog-card-size {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 1.25rem;
+}
+
+.catalog-card-price-label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.catalog-card-price-val {
+  font-family: var(--font-brand);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #000000;
+}
+
+/* Product Detail Page Mobile vs Desktop */
+.pdp-main {
+  max-width: 1680px;
+  margin: 1.75rem auto 5rem;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 96px 1fr 460px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.pdp-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pdp-image-container {
+  background-color: #ffffff;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.pdp-image {
+  width: 100%;
+  height: 100%;
+  max-height: 620px;
+  object-fit: cover;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Admin Desktop Defaults */
+.admin-fab-add {
+  display: none !important;
+}
+
+.admin-bottom-nav {
+  display: none !important;
+}
+
+.btn-add-desktop {
+  display: inline-flex !important;
+}
+
+.col-hide-mobile {
+  display: table-cell;
+}
+
+/* ==========================================================================
+   Mobile Screens: under 768px (Phone View)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar-inner {
+    padding: 0.85rem 1rem !important;
+  }
+  .brand-text {
+    font-size: 1.25rem !important;
+  }
+
+  /* Hero Section */
+  .hero-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .hero-section {
+    padding: 2rem 1.25rem 2.5rem !important;
+  }
+  .hero-title {
+    font-size: 2.1rem !important;
+    line-height: 1.15 !important;
+  }
+  .hero-img-box {
+    max-width: 320px !important;
+    height: 240px !important;
+    margin: 0 auto;
+  }
+
+  /* Catalog Grid on Phone: COMPACT 2-COLUMN GRID (Like Superkicks / Nike Mobile) */
+  .catalog-section {
+    padding: 2rem 0.85rem 3.5rem !important;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  .catalog-card {
+    border-radius: 0.85rem !important;
+    padding: 0.65rem !important;
+    border: 1px solid #eef2f6 !important;
+  }
+
+  .catalog-card-img-box {
+    height: 135px !important;
+    border-radius: 0.65rem !important;
+    padding: 0.5rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .catalog-card-sub {
+    font-size: 0.6rem !important;
+    margin-bottom: 0.15rem !important;
+  }
+
+  .catalog-card-title {
+    font-size: 0.82rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2rem;
+  }
+
+  .catalog-card-size {
+    font-size: 0.65rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .catalog-card-price-label {
+    font-size: 0.58rem !important;
+  }
+
+  .catalog-card-price-val {
+    font-size: 0.85rem !important;
+  }
+
+  /* Admin Layout on Phone: Hide sidebar, expand main view */
+  .admin-sidebar {
+    display: none !important;
+  }
+  .admin-layout {
+    grid-template-columns: 1fr !important;
+    display: block !important;
+    width: 100% !important;
+  }
+  .admin-main {
+    padding: 1rem 0.75rem 6.5rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Admin Bottom Nav Bar on Phone */
+  .admin-bottom-nav {
+    display: flex !important;
+  }
+
+  /* Admin Buttons on Phone: Hide top desktop button, show floating + action button */
+  .btn-add-desktop {
+    display: none !important;
+  }
+  .admin-fab-add {
+    display: flex !important;
+  }
+
+  /* Admin Table on Mobile: Hide secondary columns so Shoe, Price, and Actions (Edit & Delete) stay 100% visible */
+  .col-hide-mobile {
+    display: none !important;
+  }
+  .admin-main table {
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+  .admin-main th,
+  .admin-main td {
+    padding: 0.65rem 0.45rem !important;
+  }
+
+  /* Hero Section on Phone: Single column stacked layout */
+  .hero-section {
+    padding: 2rem 1rem 2.5rem !important;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .hero-stats-row {
+    margin-top: 1.5rem !important;
+    padding-top: 1.25rem !important;
+    gap: 1.5rem !important;
+  }
+  .hero-visual {
+    width: 100% !important;
+    min-height: 280px !important;
+    padding: 1.5rem 0.5rem !important;
+  }
+  .hero-visual-img {
+    max-width: 95% !important;
+    height: 230px !important;
+    transform: rotate(-8deg) scale(1) !important;
+  }
+  .hero-stat-pill-top {
+    top: 0% !important;
+    right: 0% !important;
+    padding: 0.45rem 0.75rem !important;
+  }
+  .hero-stat-pill-bottom {
+    bottom: 0% !important;
+    left: 0% !important;
+    padding: 0.5rem 0.85rem !important;
+  }
+
+  /* 3 Features Bar on Phone: SINGLE LINE horizontal row */
+  .features-bar {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.5rem !important;
+    padding: 0.85rem 0.75rem !important;
+    justify-content: flex-start !important;
+  }
+  .features-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .feature-item {
+    flex: 0 0 auto !important;
+    padding: 0.45rem 0.75rem !important;
+    border-right: none !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    border-radius: 9999px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    white-space: nowrap !important;
+  }
+  .feature-item .feature-icon-box {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+  }
+  .feature-item .feature-title {
+    font-size: 0.75rem !important;
+  }
+  .feature-item .feature-desc {
+    display: none !important;
+  }
+
+  /* Product Detail Page on Phone: Stack vertically with Big Image FIRST, Thumbnails UNDERNEATH */
+  .pdp-main {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    padding: 0 0.85rem !important;
+    margin: 1.25rem auto 3.5rem !important;
+  }
+
+  .pdp-image-container {
+    order: 1 !important;
+    width: 100% !important;
+    min-height: 340px !important;
+    height: 380px !important;
+    padding: 0 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  .pdp-image {
+    max-height: 380px !important;
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+
+  /* Thumbnails UNDER image on phone */
+  .pdp-thumbs {
+    order: 2 !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    overflow-x: auto !important;
+    padding: 0.5rem 0 !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+  }
+
+  .pdp-thumb-item {
+    width: 66px !important;
+    height: 66px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .pdp-details {
+    order: 3 !important;
+    width: 100% !important;
+  }
+
+  /* Footer on Phone */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    text-align: center !important;
+  }
+}
+

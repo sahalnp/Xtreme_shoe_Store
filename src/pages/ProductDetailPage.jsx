@@ -5,7 +5,8 @@ import {
   ChevronRight, 
   Info, 
   Sparkles,
-  Share2
+  Share2,
+  MessageCircle
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { fetchProducts } from '../api/client';
@@ -92,8 +93,14 @@ export default function ProductDetailPage() {
   };
 
   const sizes = parseSizes(currentShoe.size);
-  const inrPrice = Math.round(parseFloat(currentShoe.price || 150) * 83);
-  const brandName = (currentShoe.category_name || 'SNEAKERS').toUpperCase();
+  const baseInr = Math.round(parseFloat(currentShoe.price || 150) * 83);
+  const minInr = currentShoe.min_price 
+    ? Math.round(parseFloat(currentShoe.min_price) * 83)
+    : Math.round(baseInr * 0.9);
+  const maxInr = currentShoe.max_price 
+    ? Math.round(parseFloat(currentShoe.max_price) * 83)
+    : Math.round(baseInr * 1.2);
+  const brandName = (currentShoe.brand_name || currentShoe.category_name || 'SNEAKERS').toUpperCase();
 
   // Smooth slide transition
   const triggerSlideTransition = (newIndex) => {
@@ -154,18 +161,19 @@ export default function ProductDetailPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentProductIndex, productsList.length]);
 
-  // WhatsApp Order / Message Generator
+  // WhatsApp Seller Price & Product Inquiry Generator
   const handleSendMessageWhatsApp = () => {
     const textMessage = 
 `Hello Xtreme Superkicks! 👟
-I want to order this sneaker:
+I am inquiring about this sneaker:
 
 *Model:* ${currentShoe.name}
-*Color:* ${currentShoe.color || 'Standard'}
-*Size:* UK ${selectedSize}
-*Price:* ₹${inrPrice.toLocaleString('en-IN')}
+*Brand:* ${currentShoe.brand_name || currentShoe.category_name || 'Xtreme Superkicks'}
+*Colorway:* ${currentShoe.color || 'Standard'}
+*Size Selected:* UK ${selectedSize}
+*Estimated Price Range:* ₹${minInr.toLocaleString('en-IN')} – ₹${maxInr.toLocaleString('en-IN')}
 
-Please share payment & delivery details!`;
+Could you please share the exact price, available stock, and purchase details for this pair? Thank you!`;
 
     const encodedText = encodeURIComponent(textMessage);
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
@@ -188,22 +196,23 @@ Please share payment & delivery details!`;
       {/* Top Navbar */}
       <Navbar cartCount={cartCount} />
 
-      {/* Main Slideshow & Details Layout (Wide container with large image section) */}
-      <main style={{
+      {/* Main Slideshow & Details Layout (Generous top/bottom margin and gap between image and text) */}
+      <main className="pdp-main" style={{
         maxWidth: '1680px',
-        margin: '1.75rem auto 5rem',
-        padding: '0 3rem',
+        margin: '3.75rem auto 7rem',
+        padding: '0 3.5rem',
         display: 'grid',
         gridTemplateColumns: '96px 1fr 460px',
-        gap: '3rem',
+        gap: '4.75rem',
         alignItems: 'start'
       }}>
         
         {/* Left Thumbnails Strip */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+        <div className="pdp-thumbs" style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
           {galleryAngles.map((img, idx) => (
             <div
               key={idx}
+              className="pdp-thumb-item"
               onClick={() => setSelectedAngleIndex(idx)}
               style={{
                 width: '84px',
@@ -235,20 +244,21 @@ Please share payment & delivery details!`;
           ))}
         </div>
 
-        {/* Center: Large Image Slideshow Container with Auto-Play & Controls */}
+        {/* Center: Large Image Slideshow Container (Full Size, Zero Gap) */}
         <div 
+          className="pdp-image-container"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           style={{
             backgroundColor: '#ffffff',
-            minHeight: '680px',
+            minHeight: '620px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            padding: '2.5rem 1.5rem',
-            borderRadius: '16px',
+            padding: 0,
+            borderRadius: '20px',
             border: '1px solid #f1f5f9',
             boxShadow: '0 8px 30px rgba(0,0,0,0.03)',
             overflow: 'hidden'
@@ -259,15 +269,15 @@ Please share payment & delivery details!`;
             onClick={handlePrevSlide}
             style={{
               position: 'absolute',
-              left: '1.5rem',
+              left: '1.25rem',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: '50%',
-              backgroundColor: '#ffffff',
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
               border: '1px solid #e2e8f0',
-              boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
+              boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -281,36 +291,37 @@ Please share payment & delivery details!`;
               e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
             }}
             onMouseLeave={(e) => { 
-              e.currentTarget.style.backgroundColor = '#ffffff'; 
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; 
               e.currentTarget.style.color = '#000000';
               e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
             }}
             title="Previous Shoe"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={22} />
           </button>
 
-          {/* Large Main Displayed Sneaker Image */}
-          <div style={{
+          {/* Large Main Displayed Sneaker Image: Edge-to-Edge Full Size */}
+          <div className="pdp-image-box" style={{
             width: '100%',
             height: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '1rem',
+            padding: 0,
             overflow: 'hidden'
           }}>
             <img
+              className="pdp-image"
               src={galleryAngles[selectedAngleIndex] || mainImage}
               alt={currentShoe.name}
               style={{
                 width: '100%',
+                height: '100%',
                 maxHeight: '620px',
-                objectFit: 'contain',
+                objectFit: 'cover',
                 opacity: slideFade ? 0.25 : 1,
-                transform: slideFade ? 'scale(0.95)' : isHovered ? 'scale(1.03)' : 'scale(1)',
-                transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                filter: 'drop-shadow(0 20px 35px rgba(0, 0, 0, 0.12))'
+                transform: slideFade ? 'scale(0.96)' : isHovered ? 'scale(1.02)' : 'scale(1)',
+                transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             />
           </div>
@@ -320,15 +331,15 @@ Please share payment & delivery details!`;
             onClick={handleNextSlide}
             style={{
               position: 'absolute',
-              right: '1.5rem',
+              right: '1.25rem',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: '50%',
-              backgroundColor: '#ffffff',
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
               border: '1px solid #e2e8f0',
-              boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
+              boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -342,70 +353,31 @@ Please share payment & delivery details!`;
               e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
             }}
             onMouseLeave={(e) => { 
-              e.currentTarget.style.backgroundColor = '#ffffff'; 
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; 
               e.currentTarget.style.color = '#000000';
               e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
             }}
             title="Next Shoe"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={22} />
           </button>
-
-          {/* Interactive Navigation Dots directly on the Image */}
-          <div style={{
-            position: 'absolute',
-            bottom: '2.5rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            padding: '0.45rem 0.85rem',
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '9999px',
-            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)',
-            border: '1px solid rgba(226, 232, 240, 0.8)',
-            zIndex: 15
-          }}>
-            {productsList.map((p, idx) => (
-              <button
-                key={idx}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  triggerSlideTransition(idx);
-                }}
-                style={{
-                  width: currentProductIndex === idx ? '24px' : '8px',
-                  height: '8px',
-                  borderRadius: '9999px',
-                  backgroundColor: currentProductIndex === idx ? '#000000' : '#cbd5e1',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                  padding: 0
-                }}
-                title={p.name}
-              />
-            ))}
-          </div>
         </div>
 
-        {/* Right Details Panel: Synchronized with Slideshow (NO Love Icon) */}
-        <div>
+        {/* Right Details Panel: Synchronized with Slideshow with Clear Spacing */}
+        <div className="pdp-details" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {/* Brand Name */}
-          <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.08em', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.08em', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
             {brandName}
           </div>
 
           {/* Sneaker Title (Updates with slideshow) */}
           <h1 style={{
             fontFamily: 'var(--font-brand)',
-            fontSize: '1.5rem',
+            fontSize: '1.65rem',
             fontWeight: 900,
             textTransform: 'uppercase',
             letterSpacing: '0.02em',
-            margin: '0 0 0.35rem',
+            margin: '0 0 0.45rem',
             lineHeight: 1.25,
             color: '#000000'
           }}>
@@ -413,35 +385,38 @@ Please share payment & delivery details!`;
           </h1>
 
           {/* Colorway (Updates with slideshow) */}
-          <div style={{ fontSize: '0.78rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '1.25rem' }}>
+          <div style={{ fontSize: '0.78rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '1.5rem' }}>
             {currentShoe.color || 'Standard Edition'}
           </div>
 
-          {/* Price (Updates with slideshow) */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#000000' }}>
-              ₹{inrPrice.toLocaleString('en-IN')}
+          {/* Price Range */}
+          <div style={{ marginBottom: '1.75rem' }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#f97316', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>
+              Price Range
             </div>
-            <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '0.15rem' }}>
-              MRP (inclusive of all taxes)
+            <div style={{ fontSize: '1.85rem', fontWeight: 900, color: '#000000' }}>
+              ₹{minInr.toLocaleString('en-IN')} – ₹{maxInr.toLocaleString('en-IN')}
+            </div>
+            <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '0.2rem' }}>
+              MRP Estimated Range (inclusive of all taxes)
             </div>
           </div>
 
           {/* Size Info Header (No Size Chart button) */}
-          <div style={{ marginBottom: '0.65rem' }}>
+          <div style={{ marginBottom: '0.75rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               SHOE SIZE (UK)
             </span>
           </div>
 
           {/* Size Grid [7] [8] [9] [10] [11] */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.5rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.55rem', marginBottom: '1.75rem' }}>
             {sizes.map((s) => (
               <button
                 key={s}
                 onClick={() => setSelectedSize(s)}
                 style={{
-                  height: '44px',
+                  height: '46px',
                   background: selectedSize === s ? '#000000' : '#ffffff',
                   color: selectedSize === s ? '#ffffff' : '#000000',
                   border: '1px solid #000000',
@@ -456,7 +431,7 @@ Please share payment & delivery details!`;
             ))}
           </div>
 
-          {/* Action Button: ADD (Click directly opens WhatsApp with pre-filled sneaker details) */}
+          {/* Action Button: Inquire Price & Details with Seller on WhatsApp */}
           <button
             onClick={handleSendMessageWhatsApp}
             style={{
@@ -466,56 +441,58 @@ Please share payment & delivery details!`;
               border: 'none',
               padding: '1.15rem',
               fontWeight: 900,
-              fontSize: '0.95rem',
-              letterSpacing: '0.08em',
+              fontSize: '0.92rem',
+              letterSpacing: '0.06em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              borderRadius: '6px',
-              marginBottom: '1.5rem',
+              borderRadius: '8px',
+              marginBottom: '2rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              gap: '0.65rem',
               boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
               transition: 'background-color 0.2s, transform 0.15s'
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#222222'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e293b'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#000000'; e.currentTarget.style.transform = 'translateY(0)'; }}
           >
-            ADD
+            <MessageCircle size={19} color="#22c55e" />
+            ASK SELLER FOR PRICE & DETAILS
           </button>
 
-          {/* Section-Wise Product Information */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1.25rem' }}>
+          {/* Section-Wise Product Information (with generous gaps) */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', marginTop: '0.75rem' }}>
             {/* Section 1: About Product */}
-            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.25rem' }}>
+            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
               <h3 style={{
                 fontSize: '0.82rem',
                 fontWeight: 900,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 color: '#000000',
-                marginBottom: '0.65rem'
+                marginBottom: '0.75rem'
               }}>
                 About Product
               </h3>
-              <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: '#475569', margin: 0 }}>
+              <p style={{ fontSize: '0.85rem', lineHeight: 1.75, color: '#475569', margin: 0 }}>
                 {currentShoe.description || 'Iconic collector silhouette engineered with genuine leather and court-ready Nike Air cushioning.'}
               </p>
             </div>
 
             {/* Section 2: Product Details */}
-            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.25rem' }}>
+            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
               <h3 style={{
                 fontSize: '0.82rem',
                 fontWeight: 900,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 color: '#000000',
-                marginBottom: '0.65rem'
+                marginBottom: '0.75rem'
               }}>
                 Product Details
               </h3>
-              <ul style={{ paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.85rem', color: '#475569', margin: 0 }}>
+              <ul style={{ paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.85rem', color: '#475569', margin: 0, lineHeight: 1.6 }}>
                 <li>Genuine premium leather upper with padded collar for ankle support</li>
                 <li>Point-loaded responsive cushioning unit engineered for maximum energy return</li>
                 <li>Durable solid traction rubber outsole for superior court and street grip</li>
@@ -524,18 +501,18 @@ Please share payment & delivery details!`;
             </div>
 
             {/* Section 3: Brand Info */}
-            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.25rem' }}>
+            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
               <h3 style={{
                 fontSize: '0.82rem',
                 fontWeight: 900,
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 color: '#000000',
-                marginBottom: '0.65rem'
+                marginBottom: '0.75rem'
               }}>
                 Brand Info
               </h3>
-              <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: '#475569', margin: 0 }}>
+              <p style={{ fontSize: '0.85rem', lineHeight: 1.75, color: '#475569', margin: 0 }}>
                 Crafted for athletes and sneakerheads worldwide, bringing together high-performance engineering and iconic streetwear silhouettes. Every pair is 100% verified authentic by Xtreme Superkicks specialists.
               </p>
             </div>

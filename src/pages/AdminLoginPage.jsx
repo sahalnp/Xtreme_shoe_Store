@@ -5,8 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { loginAdmin } from '../api/client';
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -23,10 +23,15 @@ export default function AdminLoginPage() {
 
     try {
       const data = await loginAdmin(username, password);
-      login(data.user, data.token);
-      navigate(from, { replace: true });
+      if (data && data.token) {
+        login(data.user, data.token);
+        // Navigate explicitly to /admin
+        navigate('/admin', { replace: true });
+      } else {
+        throw new Error(data.message || 'Authentication failed');
+      }
     } catch (err) {
-      setError(err.message || 'Invalid credentials');
+      setError(err.message || 'Invalid username or password');
     } finally {
       setLoading(false);
     }
@@ -111,16 +116,7 @@ export default function AdminLoginPage() {
           </div>
 
           {/* Feature Badges */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', borderTop: '1px solid rgba(255, 255, 255, 0.15)', paddingTop: '1.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.82rem', color: '#e2e8f0' }}>
-              <Database size={16} color="var(--primary)" />
-              <span>MongoDB Atlas Cloud Live Synced</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.82rem', color: '#e2e8f0' }}>
-              <ShieldCheck size={16} color="#10b981" />
-              <span>JWT Authentication & Protected Routes</span>
-            </div>
-          </div>
+          
         </div>
 
         {/* Right Side: Login Form ("Administrator" removed, Orange Sign In Button) */}
@@ -178,7 +174,7 @@ export default function AdminLoginPage() {
                     borderColor: '#cbd5e1',
                     color: '#0f172a'
                   }}
-                  placeholder="Enter username"
+                  placeholder="admin"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -199,7 +195,7 @@ export default function AdminLoginPage() {
                     borderColor: '#cbd5e1',
                     color: '#0f172a'
                   }}
-                  placeholder="Enter password"
+                  placeholder="admin123"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -239,30 +235,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Seeded Credentials Helper */}
-          <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #f1f5f9', textAlign: 'center' }}>
-            <span style={{ fontSize: '0.78rem', color: '#64748b' }}>
-              Atlas Admin Credentials:
-            </span>
-            <div style={{ marginTop: '0.5rem' }}>
-              <button
-                type="button"
-                onClick={fillDemo}
-                style={{
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  color: '#334155',
-                  padding: '0.45rem 0.9rem',
-                  borderRadius: '0.4rem',
-                  fontSize: '0.78rem',
-                  cursor: 'pointer',
-                  fontWeight: 600
-                }}
-              >
-                Use: <strong style={{ color: '#000000' }}>admin</strong> / <strong style={{ color: '#000000' }}>admin123</strong>
-              </button>
-            </div>
-          </div>
+              
         </div>
 
       </div>
