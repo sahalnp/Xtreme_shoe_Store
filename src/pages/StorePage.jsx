@@ -260,13 +260,9 @@ export default function StorePage() {
               }}
               onClick={() => featuredHeroShoe && handleCardClick(featuredHeroShoe)}
             >
-              <div style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Price Range</div>
-              <div style={{ fontFamily: 'var(--font-brand)', fontSize: '1.25rem', fontWeight: 900 }}>
-                {featuredHeroShoe?.min_price && featuredHeroShoe?.max_price
-                  ? `₹${Math.round(parseFloat(featuredHeroShoe.min_price) * 83).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(featuredHeroShoe.max_price) * 83).toLocaleString('en-IN')}`
-                  : (featuredHeroShoe?.price 
-                      ? `₹${Math.round(parseFloat(featuredHeroShoe.price) * 83 * 0.9).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(featuredHeroShoe.price) * 83 * 1.2).toLocaleString('en-IN')}` 
-                      : '₹9,999 – ₹14,999')}
+              <div style={{ fontSize: '0.68rem', color: '#f97316', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.06em' }}>Brand</div>
+              <div style={{ fontFamily: 'var(--font-brand)', fontSize: '1.25rem', fontWeight: 900, textTransform: 'uppercase' }}>
+                {featuredHeroShoe?.brand_name || featuredHeroShoe?.brand?.name || 'VANS'}
               </div>
             </div>
           </div>
@@ -426,6 +422,39 @@ export default function StorePage() {
 
                     <div className="catalog-card-size">
                       Available in: <strong style={{ color: '#0f172a' }}>{shoe.size || 'UK 7-11'}</strong>
+                    </div>
+
+                    {/* Brand Badge */}
+                    <div style={{
+                      marginTop: 'auto',
+                      paddingTop: '0.65rem',
+                      borderTop: '1px solid #f1f5f9',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}>
+                      <div>
+                        <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Brand</div>
+                        <div style={{
+                          fontFamily: 'var(--font-brand)',
+                          fontSize: '0.92rem',
+                          fontWeight: 900,
+                          color: '#f97316',
+                          textTransform: 'uppercase'
+                        }}>
+                          {shoe.brand_name || shoe.brand?.name || 'Nike'}
+                        </div>
+                      </div>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 700,
+                        color: '#475569',
+                        backgroundColor: '#f1f5f9',
+                        padding: '0.2rem 0.55rem',
+                        borderRadius: '4px'
+                      }}>
+                        Explore →
+                      </span>
                     </div>
 
                   </div>
