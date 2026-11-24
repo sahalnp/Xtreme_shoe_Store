@@ -393,7 +393,7 @@ export default function StorePage() {
                   onClick={() => handleCardClick(shoe)}
                   className="catalog-card"
                 >
-                  {/* Card Image Area with Real Sneaker Photos */}
+                  {/* Card Image Area with Edge-to-Edge Sneaker Photos */}
                   <div className="catalog-card-img-box">
                     {shoe.image_url || shoe.image ? (
                       <img
@@ -402,7 +402,8 @@ export default function StorePage() {
                         style={{
                           width: '100%',
                           height: '100%',
-                          objectFit: 'contain',
+                          objectFit: 'cover',
+                          display: 'block',
                           transition: 'transform 0.35s ease'
                         }}
                         onMouseEnter={(e) => e.target.style.transform = 'scale(1.08)'}
@@ -425,25 +426,6 @@ export default function StorePage() {
 
                     <div className="catalog-card-size">
                       Available in: <strong style={{ color: '#0f172a' }}>{shoe.size || 'UK 7-11'}</strong>
-                    </div>
-
-                    {/* Card Price Range */}
-                    <div style={{
-                      marginTop: 'auto',
-                      paddingTop: '0.65rem',
-                      borderTop: '1px solid #f1f5f9',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}>
-                      <div>
-                        <div className="catalog-card-price-label">Price Range</div>
-                        <div className="catalog-card-price-val">
-                          {shoe.min_price && shoe.max_price
-                            ? `₹${Math.round(parseFloat(shoe.min_price) * 83).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(shoe.max_price) * 83).toLocaleString('en-IN')}`
-                            : `₹${Math.round(parseFloat(shoe.price || 120) * 83 * 0.9).toLocaleString('en-IN')} – ₹${Math.round(parseFloat(shoe.price || 120) * 83 * 1.2).toLocaleString('en-IN')}`}
-                        </div>
-                      </div>
                     </div>
 
                   </div>
