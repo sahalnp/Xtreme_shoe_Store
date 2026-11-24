@@ -1,5 +1,9 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-const MEDIA_BASE_URL = import.meta.env.VITE_MEDIA_URL || 'http://localhost:8000';
+const isProductionDomain = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
+const defaultApiUrl = isProductionDomain ? 'https://xtreme-backend-gamma.vercel.app/api' : 'http://localhost:8000/api';
+const defaultMediaUrl = isProductionDomain ? 'https://xtreme-backend-gamma.vercel.app' : 'http://localhost:8000';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || defaultApiUrl;
+const MEDIA_BASE_URL = import.meta.env.VITE_MEDIA_URL || defaultMediaUrl;
 
 export { API_BASE_URL, MEDIA_BASE_URL };
 

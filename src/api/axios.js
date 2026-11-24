@@ -2,7 +2,9 @@ import axios from "axios";
 import store from "../redux/store.js";
 import { clearUser } from "../features/UserSlice.js";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const isProductionDomain = typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
+const defaultApiUrl = isProductionDomain ? 'https://xtreme-backend-gamma.vercel.app/api' : 'http://localhost:8000/api';
+const baseURL = import.meta.env.VITE_API_URL || defaultApiUrl;
 
 export const axiosInstance = axios.create({
   baseURL,
