@@ -25,7 +25,6 @@ export default function ProductDetailPage() {
   // Slideshow States
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  const [slideFade, setSlideFade] = useState(false);
 
   useEffect(() => {
     const loadAllProducts = async () => {
@@ -61,14 +60,15 @@ export default function ProductDetailPage() {
 
   const mainImage = currentShoe.image_url || currentShoe.image || 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=1200&q=85';
 
-  // Multi-angle slideshow perspectives for the current active shoe
-  const galleryAngles = [
-    mainImage,
-    currentShoe.image2 || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-    currentShoe.image3 || 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
-    currentShoe.image4 || 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80',
-  ];
+  // Multi-angle perspectives of ONLY the current active shoe (filters out empty/null values)
+  const shoeImages = [
+    currentShoe.image_url || currentShoe.image,
+    currentShoe.image2_url || currentShoe.image2,
+    currentShoe.image3_url || currentShoe.image3,
+    currentShoe.image4_url || currentShoe.image4,
+  ].filter(Boolean);
+
+  const galleryAngles = shoeImages.length > 0 ? shoeImages : [mainImage];
 
   // Parse size from string (e.g. "UK 7, UK 8, UK 9, UK 10, UK 11", "7, 8, 9, 10", "UK 7-11") into array
   const parseSizes = (rawSize) => {
@@ -102,47 +102,35 @@ export default function ProductDetailPage() {
     : Math.round(baseInr * 1.2);
   const brandName = (currentShoe.brand_name || currentShoe.category_name || 'SNEAKERS').toUpperCase();
 
-  // Smooth slide transition
-  const triggerSlideTransition = (newIndex) => {
-    setSlideFade(true);
-    setTimeout(() => {
-      setCurrentProductIndex(newIndex);
-      setSelectedAngleIndex(0);
-      const nextShoe = productsList[newIndex];
-      if (nextShoe) {
-        window.history.replaceState(null, '', `/product/${nextShoe.id || nextShoe._id}`);
-      }
-      setSlideFade(false);
-    }, 180);
-  };
-
-  // Slide to next shoe (syncs image, name, price, color, sizes on the right side)
-  const handleNextSlide = () => {
-    if (productsList.length > 0) {
-      const nextIndex = (currentProductIndex + 1) % productsList.length;
-      triggerSlideTransition(nextIndex);
-    }
-  };
-
-  // Slide to previous shoe
-  const handlePrevSlide = () => {
-    if (productsList.length > 0) {
-      const prevIndex = (currentProductIndex - 1 + productsList.length) % productsList.length;
-      triggerSlideTransition(prevIndex);
-    }
-  };
-
-  // Auto-play slideshow timer (advances every 3 seconds)
+  // Reset angle index when switching shoe
   useEffect(() => {
-    if (!isAutoPlay || isHovered || productsList.length <= 1) return;
+    setSelectedAngleIndex(0);
+  }, [currentProductIndex]);
+
+  // Slide to next angle/image of the current shoe
+  const handleNextSlide = () => {
+    if (galleryAngles.length > 1) {
+      setSelectedAngleIndex((prev) => (prev + 1) % galleryAngles.length);
+    }
+  };
+
+  // Slide to previous angle/image of the current shoe
+  const handlePrevSlide = () => {
+    if (galleryAngles.length > 1) {
+      setSelectedAngleIndex((prev) => (prev - 1 + galleryAngles.length) % galleryAngles.length);
+    }
+  };
+
+  // Auto-play slideshow timer (advances current shoe's angle every 2 seconds smoothly)
+  useEffect(() => {
+    if (!isAutoPlay || galleryAngles.length <= 1) return;
 
     const timer = setInterval(() => {
-      const nextIndex = (currentProductIndex + 1) % productsList.length;
-      triggerSlideTransition(nextIndex);
-    }, 3000); // 3 seconds wait
+      setSelectedAngleIndex((prev) => (prev + 1) % galleryAngles.length);
+    }, 2000); // 2 seconds auto-advance
 
     return () => clearInterval(timer);
-  }, [isAutoPlay, isHovered, currentProductIndex, productsList.length]);
+  }, [isAutoPlay, selectedAngleIndex, galleryAngles.length]);
 
   // Sync selected size if out of range
   useEffect(() => {
@@ -265,102 +253,139 @@ Could you please share the exact price, available stock, and purchase details fo
           }}
         >
           {/* Previous Slide Arrow */}
-          <button
-            onClick={handlePrevSlide}
-            style={{
-              position: 'absolute',
-              left: '1.25rem',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '44px',
-              height: '44px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              zIndex: 10,
-              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-            onMouseEnter={(e) => { 
-              e.currentTarget.style.backgroundColor = '#000000'; 
-              e.currentTarget.style.color = '#ffffff';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            }}
-            onMouseLeave={(e) => { 
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; 
-              e.currentTarget.style.color = '#000000';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            }}
-            title="Previous Shoe"
-          >
-            <ChevronLeft size={22} />
-          </button>
+          {galleryAngles.length > 1 && (
+            <button
+              onClick={handlePrevSlide}
+              style={{
+                position: 'absolute',
+                left: '1.25rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 20,
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+              onMouseEnter={(e) => { 
+                e.currentTarget.style.backgroundColor = '#000000'; 
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+              }}
+              onMouseLeave={(e) => { 
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.92)'; 
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+              }}
+              title="Previous Angle"
+            >
+              <ChevronLeft size={22} />
+            </button>
+          )}
 
-          {/* Large Main Displayed Sneaker Image: Edge-to-Edge Full Size */}
+          {/* Large Main Displayed Sneaker Image: Smooth Horizontal Tracking Slideshow */}
           <div className="pdp-image-box" style={{
+            position: 'relative',
             width: '100%',
             height: '100%',
+            minHeight: '620px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: 0,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            borderRadius: '20px',
+            backgroundColor: '#ffffff'
           }}>
-            <img
-              className="pdp-image"
-              src={galleryAngles[selectedAngleIndex] || mainImage}
-              alt={currentShoe.name}
-              style={{
-                width: '100%',
-                height: '100%',
-                maxHeight: '620px',
-                objectFit: 'cover',
-                opacity: slideFade ? 0.25 : 1,
-                transform: slideFade ? 'scale(0.96)' : isHovered ? 'scale(1.02)' : 'scale(1)',
-                transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
-            />
+            {galleryAngles.map((imgSrc, idx) => {
+              const isActive = idx === selectedAngleIndex;
+              const isPast = idx < selectedAngleIndex;
+              const translateX = isActive ? '0%' : isPast ? '-100%' : '100%';
+
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    transform: `translateX(${translateX})`,
+                    opacity: isActive ? 1 : 0,
+                    pointerEvents: isActive ? 'auto' : 'none',
+                    transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease',
+                    willChange: 'transform, opacity',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#ffffff'
+                  }}
+                >
+                  <img
+                    className="pdp-image"
+                    src={imgSrc}
+                    alt={`${currentShoe.name} view ${idx + 1}`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      maxHeight: '620px',
+                      objectFit: 'contain',
+                      display: 'block',
+                      transition: 'transform 0.4s ease',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)'
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
 
           {/* Next Slide Arrow */}
-          <button
-            onClick={handleNextSlide}
-            style={{
-              position: 'absolute',
-              right: '1.25rem',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '44px',
-              height: '44px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              border: '1px solid #e2e8f0',
-              boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              zIndex: 10,
-              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-            onMouseEnter={(e) => { 
-              e.currentTarget.style.backgroundColor = '#000000'; 
-              e.currentTarget.style.color = '#ffffff';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            }}
-            onMouseLeave={(e) => { 
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; 
-              e.currentTarget.style.color = '#000000';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            }}
-            title="Next Shoe"
-          >
-            <ChevronRight size={22} />
-          </button>
+          {galleryAngles.length > 1 && (
+            <button
+              onClick={handleNextSlide}
+              style={{
+                position: 'absolute',
+                right: '1.25rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.92)',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 6px 18px rgba(0,0,0,0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 20,
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+              onMouseEnter={(e) => { 
+                e.currentTarget.style.backgroundColor = '#000000'; 
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+              }}
+              onMouseLeave={(e) => { 
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.92)'; 
+                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+              }}
+              title="Next Angle"
+            >
+              <ChevronRight size={22} />
+            </button>
+          )}
         </div>
 
         {/* Right Details Panel: Synchronized with Slideshow with Clear Spacing */}
