@@ -180,7 +180,7 @@ Could you please share the exact price, available stock, and purchase details fo
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff', color: '#000000', fontFamily: 'var(--font-main)' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff', color: '#000000', fontFamily: 'var(--font-main)', width: '100%', maxWidth: '100vw', overflowX: 'hidden' }}>
       {/* Top Navbar */}
       <Navbar cartCount={cartCount} />
 
@@ -548,16 +548,17 @@ Could you please share the exact price, available stock, and purchase details fo
       </main>
 
       {/* Clean Modern Footer */}
-      <footer style={{
+      <footer className="store-footer" style={{
         backgroundColor: '#ffffff',
         borderTop: '1px solid #e5e7eb',
         padding: '4rem 2.5rem 2.5rem',
         color: '#000000',
-        width: '100%'
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', width: '100%' }}>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', marginBottom: '3.5rem' }}>
+          <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', marginBottom: '3.5rem' }}>
             
             {/* Brand Intro */}
             <div>
@@ -605,7 +606,7 @@ Could you please share the exact price, available stock, and purchase details fo
               <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.5 }}>
                 Subscribe for early access to limited raffle releases and shock drops.
               </p>
-              <div style={{ display: 'flex' }}>
+              <div className="footer-newsletter-wrap" style={{ display: 'flex', width: '100%' }}>
                 <input
                   type="email"
                   placeholder="Enter email..."
@@ -616,6 +617,7 @@ Could you please share the exact price, available stock, and purchase details fo
                     color: '#000000',
                     fontSize: '0.85rem',
                     flex: 1,
+                    minWidth: 0,
                     outline: 'none'
                   }}
                 />
@@ -637,7 +639,7 @@ Could you please share the exact price, available stock, and purchase details fo
 
           </div>
 
-          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94a3b8' }}>
+          <div className="footer-bottom" style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94a3b8' }}>
             <div>© 2026 XTREME SUPERKICKS. All rights reserved.</div>
             <div>Official Sneaker and Streetwear Portal.</div>
           </div>

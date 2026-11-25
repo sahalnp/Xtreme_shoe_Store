@@ -366,3 +366,4 @@ export default function ViewProductModal({ isOpen, onClose, product, onEdit }) {
     </div>
   );
 }
+

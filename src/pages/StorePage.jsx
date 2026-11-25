@@ -111,7 +111,7 @@ function CatalogProductCard({ shoe, onCardClick }) {
         </div>
 
         {/* Brand Badge */}
-        <div style={{
+        <div className="catalog-card-brand-box" style={{
           marginTop: 'auto',
           paddingTop: '0.65rem',
           borderTop: '1px solid #f1f5f9',
@@ -120,8 +120,8 @@ function CatalogProductCard({ shoe, onCardClick }) {
           justifyContent: 'space-between'
         }}>
           <div>
-            <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Brand</div>
-            <div style={{
+            <div className="catalog-card-brand-lbl" style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Brand</div>
+            <div className="catalog-card-brand-val" style={{
               fontFamily: 'var(--font-brand)',
               fontSize: '0.92rem',
               fontWeight: 900,
@@ -131,7 +131,7 @@ function CatalogProductCard({ shoe, onCardClick }) {
               {shoe.brand_name || shoe.brand?.name || 'Nike'}
             </div>
           </div>
-          <span style={{
+          <span className="catalog-card-explore-btn" style={{
             fontSize: '0.72rem',
             fontWeight: 700,
             color: '#475569',
@@ -417,32 +417,20 @@ export default function StorePage() {
       <main id="catalog" className="catalog-section" style={{ width: '100%', maxWidth: '1440px', margin: '0 auto', padding: '3.5rem 2.5rem 5rem' }}>
         
         {/* Header and Category Pills */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="catalog-header-wrap" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <span style={{ fontSize: '0.78rem', color: 'var(--primary)', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
               // OUR CURATED CATALOG
             </span>
-            <h2 style={{ fontFamily: 'var(--font-brand)', fontSize: '2.25rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: '0.25rem', color: '#000000' }}>
+            <h2 className="catalog-header-title" style={{ fontFamily: 'var(--font-brand)', fontSize: '2.25rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: '0.25rem', color: '#000000' }}>
               Explore Popular Footwear
             </h2>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.65rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+          <div className="category-pill-row">
             <button
+              className={`category-pill ${selectedCategory === '' ? 'active' : ''}`}
               onClick={() => setSelectedCategory('')}
-              style={{
-                padding: '0.6rem 1.4rem',
-                borderRadius: '9999px',
-                fontSize: '0.82rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                background: selectedCategory === '' ? '#000000' : '#f1f5f9',
-                color: selectedCategory === '' ? '#ffffff' : '#475569',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
             >
               All Shoes ({products.length})
             </button>
@@ -450,21 +438,8 @@ export default function StorePage() {
             {categories.map((cat) => (
               <button
                 key={cat.id || cat._id}
+                className={`category-pill ${selectedCategory === (cat.id || cat._id).toString() ? 'active' : ''}`}
                 onClick={() => setSelectedCategory((cat.id || cat._id).toString())}
-                style={{
-                  padding: '0.6rem 1.4rem',
-                  borderRadius: '9999px',
-                  fontSize: '0.82rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  background: selectedCategory === (cat.id || cat._id).toString() ? '#000000' : '#f1f5f9',
-                  color: selectedCategory === (cat.id || cat._id).toString() ? '#ffffff' : '#475569',
-                  border: 'none',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s ease'
-                }}
               >
                 {cat.name}
               </button>
@@ -498,14 +473,15 @@ export default function StorePage() {
       </main>
 
       {/* Clean Modern Footer */}
-      <footer style={{
+      <footer className="store-footer" style={{
         backgroundColor: '#ffffff',
         borderTop: '1px solid #e5e7eb',
         padding: '4rem 2.5rem 2.5rem',
         color: '#000000',
-        width: '100%'
+        width: '100%',
+        boxSizing: 'border-box'
       }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', width: '100%' }}>
           
           <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', marginBottom: '3.5rem' }}>
             
@@ -555,7 +531,7 @@ export default function StorePage() {
               <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.5 }}>
                 Subscribe for early access to limited raffle releases and shock drops.
               </p>
-              <div style={{ display: 'flex' }}>
+              <div className="footer-newsletter-wrap" style={{ display: 'flex', width: '100%' }}>
                 <input
                   type="email"
                   placeholder="Enter email..."
@@ -566,6 +542,7 @@ export default function StorePage() {
                     color: '#000000',
                     fontSize: '0.85rem',
                     flex: 1,
+                    minWidth: 0,
                     outline: 'none'
                   }}
                 />

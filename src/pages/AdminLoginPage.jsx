@@ -174,7 +174,7 @@ export default function AdminLoginPage() {
                     borderColor: '#cbd5e1',
                     color: '#0f172a'
                   }}
-                  placeholder="admin"
+                  placeholder="Enter your username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -195,7 +195,7 @@ export default function AdminLoginPage() {
                     borderColor: '#cbd5e1',
                     color: '#0f172a'
                   }}
-                  placeholder="admin123"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
