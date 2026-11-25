@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, ArrowRight, Star, Flame, ShieldCheck, Truck, RotateCcw, Footprints, Plus, Check } from 'lucide-react';
+import { ShoppingBag, ArrowRight, Star, Flame, Footprints, Plus, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import { fetchProducts, fetchCategories } from '../api/client';
 
@@ -412,45 +412,6 @@ export default function StorePage() {
           </div>
         </div>
       </section>
-
-      {/* 3 Pillars: Single line on mobile */}
-      <div className="features-bar" style={{
-        width: '100%',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        borderBottom: '1px solid #e2e8f0',
-        backgroundColor: '#ffffff'
-      }}>
-        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
-          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Truck size={22} color="#0f172a" />
-          </div>
-          <div>
-            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Express Delivery</div>
-            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>Free shipping on all orders over ₹2,999</div>
-          </div>
-        </div>
-
-        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem', borderRight: '1px solid #edf2f7' }}>
-          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShieldCheck size={22} color="#0f172a" />
-          </div>
-          <div>
-            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>100% Genuine Sneakers</div>
-            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>Every shoe certified authentic</div>
-          </div>
-        </div>
-
-        <div className="feature-item" style={{ padding: '1.5rem 2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div className="feature-icon-box" style={{ width: '44px', height: '44px', borderRadius: '12px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <RotateCcw size={22} color="#0f172a" />
-          </div>
-          <div>
-            <div className="feature-title" style={{ fontWeight: 800, fontSize: '0.88rem', textTransform: 'uppercase' }}>Hassle-Free Returns</div>
-            <div className="feature-desc" style={{ fontSize: '0.75rem', color: '#64748b' }}>14-day easy return policy</div>
-          </div>
-        </div>
-      </div>
 
       {/* Main Catalog Section */}
       <main id="catalog" className="catalog-section" style={{ width: '100%', maxWidth: '1440px', margin: '0 auto', padding: '3.5rem 2.5rem 5rem' }}>

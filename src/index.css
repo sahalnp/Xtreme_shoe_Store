@@ -605,45 +605,6 @@ body {
     padding: 0.5rem 0.85rem !important;
   }
 
-  /* 3 Features Bar on Phone: SINGLE LINE horizontal row */
-  .features-bar {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 0.5rem !important;
-    padding: 0.85rem 0.75rem !important;
-    justify-content: flex-start !important;
-  }
-  .features-bar::-webkit-scrollbar {
-    display: none;
-  }
-  .feature-item {
-    flex: 0 0 auto !important;
-    padding: 0.45rem 0.75rem !important;
-    border-right: none !important;
-    border: 1px solid #e2e8f0 !important;
-    background: #f8fafc !important;
-    border-radius: 9999px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.45rem !important;
-    white-space: nowrap !important;
-  }
-  .feature-item .feature-icon-box {
-    width: 26px !important;
-    height: 26px !important;
-    border-radius: 50% !important;
-    background: transparent !important;
-  }
-  .feature-item .feature-title {
-    font-size: 0.75rem !important;
-  }
-  .feature-item .feature-desc {
-    display: none !important;
-  }
-
   /* Product Detail Page on Phone: Stack vertically with Big Image FIRST, Thumbnails UNDERNEATH */
   .pdp-main {
     display: flex !important;
