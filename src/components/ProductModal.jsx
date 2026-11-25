@@ -81,11 +81,25 @@ export default function ProductModal({
       setDescription(product.description || '');
       setIsActive(product.is_active !== undefined ? product.is_active : true);
 
+      const resolveImageUrl = (img, imgUrl) => {
+        if (imgUrl && typeof imgUrl === 'string' && (imgUrl.startsWith('http') || imgUrl.startsWith('data:'))) {
+          return imgUrl;
+        }
+        if (img && typeof img === 'string') {
+          if (img.startsWith('http') || img.startsWith('data:')) return img;
+          const backendHost = window.location.hostname.includes('vercel.app')
+            ? 'https://xtreme-backend-gamma.vercel.app'
+            : 'http://localhost:8000';
+          return `${backendHost}/uploads/${img}`;
+        }
+        return null;
+      };
+
       setPreviews({
-        image: product.image_url || product.image || null,
-        image2: product.image2_url || product.image2 || null,
-        image3: product.image3_url || product.image3 || null,
-        image4: product.image4_url || product.image4 || null,
+        image: resolveImageUrl(product.image, product.image_url),
+        image2: resolveImageUrl(product.image2, product.image2_url),
+        image3: resolveImageUrl(product.image3, product.image3_url),
+        image4: resolveImageUrl(product.image4, product.image4_url),
       });
       setImages({ image: null, image2: null, image3: null, image4: null });
     } else {

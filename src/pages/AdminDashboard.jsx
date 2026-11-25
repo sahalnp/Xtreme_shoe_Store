@@ -5,6 +5,7 @@ import {
   Search, 
   Trash2, 
   Edit3,
+  Eye,
   CheckCircle2, 
   XCircle,
   Package,
@@ -18,6 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import AdminSidebar from '../components/AdminSidebar';
 import DeleteModal from '../components/DeleteModal';
 import ProductModal from '../components/ProductModal';
+import ViewProductModal from '../components/ViewProductModal';
 import { 
   fetchProducts, 
   fetchCategories, 
@@ -48,6 +50,15 @@ export default function AdminDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // View Product Modal state
+  const [viewingProduct, setViewingProduct] = useState(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+  const handleOpenView = (product) => {
+    setViewingProduct(product);
+    setIsViewModalOpen(true);
+  };
 
   // Active Tab for Admin View ('products' or 'account')
   const [activeTab, setActiveTab] = useState('products');
@@ -327,9 +338,13 @@ export default function AdminDashboard() {
                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fcfdfe'}
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                       >
-                        {/* Thumbnail & Name */}
+                        {/* Thumbnail & Name (Clickable to View) */}
                         <td style={{ padding: '0.75rem 0.85rem' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div 
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}
+                            onClick={() => handleOpenView(prod)}
+                            title="Click to view sneaker details"
+                          >
                             <div style={{
                               width: '46px',
                               height: '46px',
@@ -463,9 +478,30 @@ export default function AdminDashboard() {
                           )}
                         </td>
 
-                        {/* Action: Edit and Delete */}
+                        {/* Action: View, Edit and Delete */}
                         <td style={{ padding: '0.75rem 0.85rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
                           <div style={{ display: 'inline-flex', gap: '0.45rem', alignItems: 'center' }}>
+                            <button
+                              onClick={() => handleOpenView(prod)}
+                              style={{
+                                width: '32px',
+                                height: '32px',
+                                borderRadius: '6px',
+                                backgroundColor: '#fff',
+                                border: '1px solid #cbd5e1',
+                                color: '#475569',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'background-color 0.15s ease'
+                              }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
+                              title="View sneaker details"
+                            >
+                              <Eye size={15} />
+                            </button>
                             <button
                               onClick={() => handleOpenEdit(prod)}
                               style={{
@@ -722,6 +758,17 @@ export default function AdminDashboard() {
     )}
 
   </main>
+
+  {/* View Product Details Modal */}
+  <ViewProductModal
+    isOpen={isViewModalOpen}
+    onClose={() => {
+      setIsViewModalOpen(false);
+      setViewingProduct(null);
+    }}
+    product={viewingProduct}
+    onEdit={handleOpenEdit}
+  />
 
   {/* Add Product Modal */}
   <ProductModal
